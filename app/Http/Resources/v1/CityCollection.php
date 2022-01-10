@@ -4,7 +4,7 @@ namespace App\Http\Resources\v1;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class CategoryCollection extends ResourceCollection
+class CityCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -22,7 +22,7 @@ class CategoryCollection extends ResourceCollection
                 'slug'=>$item->slug
             ];
             if ($item->parent_id == 0){
-                $data=array_merge($data,['sub'=>new CategoryCollection($item->sub_categories)]);
+                $data=array_merge($data,['units'=>new CityCollection($item->units)]);
             }
             return $data;
         });

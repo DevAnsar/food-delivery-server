@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Api\CityController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,4 +26,5 @@ Route::prefix('admin')->group(function (){
 
 Route::prefix('v1')->group(function (){
     Route::get('/categories',[CategoryController::class,'categories']);
+    Route::get('/cities',[CityController::class,'cities']);
 });
