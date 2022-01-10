@@ -4,7 +4,7 @@ namespace App\Http\Resources\v1;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class CityCollection extends ResourceCollection
+class AddressCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -17,13 +17,16 @@ class CityCollection extends ResourceCollection
         return $this->collection->map(function ($item){
             $data=[
                 'id'=>$item->id,
-                'title'=>$item->title,
                 'name'=>$item->name,
-                'slug'=>$item->slug
+                'address'=>$item->address,
+                'city_id'=>$item->city_id,
+                'city'=>new CityResource($item->city),
+                'area_id'=>new CityResource($item->area),
+                'floor'=>$item->floor,
+                'unit'=>$item->unit,
+                'lat'=>$item->lat,
+                'lng'=>$item->ing
             ];
-            if ($item->parent_id == 0){
-                $data=array_merge($data,['areas'=>new CityCollection($item->units)]);
-            }
             return $data;
         });
     }

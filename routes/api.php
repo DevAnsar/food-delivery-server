@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Api\CityController;
@@ -27,4 +28,5 @@ Route::prefix('admin')->group(function (){
 Route::prefix('v1')->group(function (){
     Route::get('/categories',[CategoryController::class,'categories']);
     Route::get('/cities',[CityController::class,'cities']);
+    Route::get('/addresses',addressController::class);
 });
