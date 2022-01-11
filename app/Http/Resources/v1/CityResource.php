@@ -14,6 +14,15 @@ class CityResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $data=[
+            'id'=>$this->id,
+            'title'=>$this->title,
+            'name'=>$this->name,
+            'slug'=>$this->slug
+        ];
+//        if ($this->parent_id == 0){
+//            $data=array_merge($data,['areas'=>new CityCollection($this->units)]);
+//        }
+        return $data;
     }
 }

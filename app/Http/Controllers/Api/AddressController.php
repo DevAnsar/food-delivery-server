@@ -15,11 +15,14 @@ class AddressController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $user=auth()->user();
-            return $this->res(new AddressCollection($user->addresses),'آدرس های شما');
+            //auth()->loginUsingId(1);
+            $user=$request->user();
+            return $this->res([
+                'addresses'=>new AddressCollection($user->addresses)
+            ],'آدرس های شما');
         }catch (\Exception $e){
             return $this->res(null,$this->SystemErrorMessage);
         }
@@ -34,14 +37,14 @@ class AddressController extends Controller
     public function store(AddressRequest $request)
     {
         try {
-            $user=auth()->user();
-            $user->addresses()->create([
+            $user=$request->user();
+            $address=$user->addresses()->create([
                 'name'=>$request->name,
                 'address'=>$request->address,
-                'city_id'=>$request->city_id,
-                'area_id'=>$request->area_id,
+                'city_id'=>$request->cityId,
+                'area_id'=>$request->areaId,
             ]);
-            return $this->res(null,'آدرس با موفقیت افزوده شد');
+            return $this->res(['address'=>$address],'آدرس با موفقیت افزوده شد');
         }catch (\Exception $e){
             return $this->res(null,$this->SystemErrorMessage);
         }
@@ -57,20 +60,20 @@ class AddressController extends Controller
     public function update(AddressRequest $request, Address $address)
     {
         try {
-            $user=auth()->user();
+            $user=$request->user();
             if ($address->user_id == $user->id){
             $address->update([
                 'name'=>$request->name,
                 'address'=>$request->address,
-                'city_id'=>$request->city_id,
-                'area_id'=>$request->area_id,
+                'city_id'=>$request->cityId,
+                'area_id'=>$request->areaId,
             ]);
             return $this->res(null,'آدرس با موفقیت افزوده شد');
             }else{
                 return $this->res(null,'عدم اجازه دسترسی',false);
             }
-        }catch (\Exception $e){
-            return $this->res(null,$this->SystemErrorMessage);
+        }catch (\Exception $exception){
+            return $this->res(null,$this->SystemErrorMessage,false);
         }
     }
 

@@ -13,9 +13,9 @@ class CityController extends Controller
         try{
             $cities=City::where('parent_id','=',0)->get();
             $citiesCollection = new CityCollection($cities);
-            return  response()->json($citiesCollection);
+            return  $this->res(['cities'=>$citiesCollection],'لیست شهر ها');
         }catch(\Exception $exception){
-            return $exception;
+            return  $this->res('',$this->SystemErrorMessage,false);
         }
     }
 }

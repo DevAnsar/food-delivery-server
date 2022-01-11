@@ -26,8 +26,8 @@ class AddressRequest extends FormRequest
         return [
             'name'=>'required',
             'address'=>'required|min:2',
-            'city_id'=>'required',
-            'area_id'=>'required',
+            'cityId'=>'required',
+            'areaId'=>'required',
         ];
     }
 }

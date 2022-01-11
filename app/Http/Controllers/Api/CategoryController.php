@@ -14,9 +14,9 @@ class CategoryController extends Controller
         try{
            $categories=Category::where('parent_id','=',0)->get();
            $categoriesCollection = new CategoryCollection($categories);
-           return  response()->json($categoriesCollection);
+           return  $this->res($categoriesCollection,'لیست دسته بندی ها');
         }catch(\Exception $exception){
-            return $exception;
+            return  $this->res('',$this->SystemErrorMessage,false);
         }
     }
 }
