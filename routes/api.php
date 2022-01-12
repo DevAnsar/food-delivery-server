@@ -29,8 +29,11 @@ Route::prefix('admin')->group(function (){
 
 Route::prefix('v1')->group(function (){
     Route::middleware('auth:sanctum')->group(function (){
-        Route::resource('/user/address',AddressController::class);
+        Route::prefix('user')->group(function (){
+            Route::resource('/address',AddressController::class);
+        });
         Route::get('/providers/{category_id}/{sub_category_id}',[ProviderController::class,'index']);
+        Route::get('/providers/{provider_slug}',[ProviderController::class,'provider']);
     });
     Route::get('/categories',[CategoryController::class,'categories']);
     Route::get('/cities',[CityController::class,'cities']);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\v1\ProviderCollection;
+use App\Http\Resources\v1\ProviderResource;
 use App\Models\Provider;
 use Illuminate\Http\Request;
 
@@ -21,6 +22,21 @@ class ProviderController extends Controller
             return $this->res([
                 'providers'=>new ProviderCollection($providers->get())
             ],'لیست ارائه دهنده خدمات');
+        }catch (\Exception $exception){
+            return $this->res('',$this->SystemErrorMessage,false);
+        }
+    }
+
+    public function provider($provider_slug){
+        try{
+            $provider=Provider::query()->where('slug','=',$provider_slug)->first();
+            if ($provider){
+            return $this->res([
+                'provider'=>new ProviderResource($provider,true)
+            ],'مشخصات ارائه دهنده خدمات');
+            }else{
+                return $this->res('','سرویس دهنده ای برای درخواست شما پیدا نشد',false);
+            }
         }catch (\Exception $exception){
             return $this->res('',$this->SystemErrorMessage,false);
         }

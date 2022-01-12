@@ -17,6 +17,7 @@ class ProviderCollection extends ResourceCollection
         return $this->collection->map(function ($item){
         $data=[
             'id'=>$item->id,
+            'slug'=>$item->slug,
             'categoryId'=>$item->category_id,
             'subCategoryId'=>$item->sub_category_id,
             'name'=>$item->name,
