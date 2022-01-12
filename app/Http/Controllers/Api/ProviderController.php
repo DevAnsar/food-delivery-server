@@ -18,7 +18,9 @@ class ProviderController extends Controller
             if ($sub_category_id != 0){
                 $providers->where('sub_category_id','=',$sub_category_id);
             }
-            return $this->res(new ProviderCollection($providers->get()),'لیست ارائه دهنده خدمات');
+            return $this->res([
+                'providers'=>new ProviderCollection($providers->get())
+            ],'لیست ارائه دهنده خدمات');
         }catch (\Exception $exception){
             return $this->res('',$this->SystemErrorMessage,false);
         }

@@ -28,10 +28,12 @@ Route::prefix('admin')->group(function (){
 });
 
 Route::prefix('v1')->group(function (){
+    Route::middleware('auth:sanctum')->group(function (){
+        Route::resource('/user/address',AddressController::class);
+        Route::get('/providers/{category_id}/{sub_category_id}',[ProviderController::class,'index']);
+    });
     Route::get('/categories',[CategoryController::class,'categories']);
     Route::get('/cities',[CityController::class,'cities']);
-    Route::resource('/user/address',AddressController::class)->middleware('auth:sanctum');
-    Route::get('/providers/{category_id}/{sub_category_id}',[ProviderController::class,'index']);
     Route::prefix('auth')->group(function (){
         Route::post('/phone',[UserController::class,'check_phone_number']);//create or update user and send login code
         Route::post('/code',[UserController::class,'check_login_code']);

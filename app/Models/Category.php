@@ -33,4 +33,7 @@ class Category extends Model
     public function sub_categories(){
         return $this->hasMany(Category::class,'parent_id','id');
     }
+    public function providers(){
+        return $this->hasMany(Provider::class,'category_id','id');
+    }
 }
