@@ -31,9 +31,14 @@ Route::prefix('v1')->group(function (){
     Route::middleware('auth:sanctum')->group(function (){
         Route::prefix('user')->group(function (){
             Route::resource('/address',AddressController::class);
+            Route::get('/me',[UserController::class,'me']);
+            Route::patch('/me',[UserController::class,'update_user_information']);
         });
         Route::get('/providers/{category_id}/{sub_category_id}',[ProviderController::class,'index']);
         Route::get('/providers/{provider_slug}',[ProviderController::class,'provider']);
+        Route::get('/search',[UserController::class,'get_search']);
+        Route::get('/my-orders',[UserController::class,'my_orders']);
+        Route::get('/my-order-tracking',[UserController::class,'my_orders_tracking']);
     });
     Route::get('/categories',[CategoryController::class,'categories']);
     Route::get('/cities',[CityController::class,'cities']);

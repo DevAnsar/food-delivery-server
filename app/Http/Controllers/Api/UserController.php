@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserInformationRequest;
+use App\Http\Resources\v1\MeResource;
+use App\Http\Resources\v1\ProviderCollection;
+use App\Models\Provider;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -63,6 +67,102 @@ class UserController extends Controller
                 }else{
                     return  $this->res('','کد وارد شده صحیح نمیباشد',false);
                 }
+            }else{
+                return  $this->res('','کاربر یافت نشد',false);
+            }
+        }catch (\Exception $exception){
+            return  $this->res('',$this->SystemErrorMessage,false);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function me(Request $request){
+        try {
+
+            $user=$request->user();
+            if ($user){
+                    return  $this->res([
+                        'user'=>new MeResource($user)
+                    ],'',true);
+            }else{
+                return  $this->res('','کاربر یافت نشد',false);
+            }
+        }catch (\Exception $exception){
+            return  $this->res('',$this->SystemErrorMessage,false);
+        }
+    }
+
+    public function update_user_information(UserInformationRequest $request){
+        try {
+
+            $user=$request->user();
+            if ($user){
+                $user->update([
+                    'name'=>$request->name,
+                    'birth'=>$request->birth,
+                    'email'=>$request->email,
+                    'newsletter'=>$request->newsletter
+                ]);
+                return  $this->res([
+                    'user'=>new MeResource($user)
+                ],'پروفایل آپدیت شذ');
+
+            }else{
+                return  $this->res('','کاربر یافت نشد',false);
+            }
+        }catch (\Exception $exception){
+            return  $this->res('',$this->SystemErrorMessage,false);
+        }
+    }
+
+    public function get_search(Request $request){
+        try {
+
+            $search=$request->query('search');
+            if ($search){
+                $providers=Provider::query()->where('name','like',"%".$search."%")->get();
+                return  $this->res([
+                    'results'=>new ProviderCollection($providers)
+                ],'نتایج جستجو');
+
+            }else{
+                return  $this->res('','برای جستجو باید مقداری مشخص کنید',false);
+            }
+        }catch (\Exception $exception){
+            return  $this->res('',$this->SystemErrorMessage,false);
+        }
+    }
+
+    public function my_orders(Request  $request){
+        try {
+
+            $user=$request->user();
+            if ($user){
+
+                return  $this->res([
+                    'myOrders'=>[]
+                ],'سفارشات من');
+
+            }else{
+                return  $this->res('','کاربر یافت نشد',false);
+            }
+        }catch (\Exception $exception){
+            return  $this->res('',$this->SystemErrorMessage,false);
+        }
+    }
+    public function my_orders_tracking(Request  $request){
+        try {
+
+            $user=$request->user();
+            if ($user){
+
+                return  $this->res([
+                    'myOrders'=>[]
+                ],'پیگیری سفارش');
+
             }else{
                 return  $this->res('','کاربر یافت نشد',false);
             }
