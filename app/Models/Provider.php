@@ -47,4 +47,7 @@ class Provider extends Model
     public function menus(){
         return $this->hasMany(Menu::class,'provider_id','id');
     }
+    public function favorites(){
+        return $this->hasMany(FavoriteProvider::class,'provider_id','id');
+    }
 }

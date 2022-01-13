@@ -34,13 +34,14 @@ Route::prefix('v1')->group(function (){
             Route::get('/me',[UserController::class,'me']);
             Route::patch('/me',[UserController::class,'update_user_information']);
         });
+        Route::get('/categories',[CategoryController::class,'categories']);
         Route::get('/providers/{category_id}/{sub_category_id}',[ProviderController::class,'index']);
         Route::get('/providers/{provider_slug}',[ProviderController::class,'provider']);
+        Route::post('/providers/{id}/like',[ProviderController::class,'provider_like_or_dislike']);
         Route::get('/search',[UserController::class,'get_search']);
         Route::get('/my-orders',[UserController::class,'my_orders']);
         Route::get('/my-order-tracking',[UserController::class,'my_orders_tracking']);
     });
-    Route::get('/categories',[CategoryController::class,'categories']);
     Route::get('/cities',[CityController::class,'cities']);
     Route::prefix('auth')->group(function (){
         Route::post('/phone',[UserController::class,'check_phone_number']);//create or update user and send login code
