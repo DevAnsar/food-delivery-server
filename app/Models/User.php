@@ -52,4 +52,7 @@ class User extends Authenticatable
     public function favorites(){
         return $this->hasMany(FavoriteProvider::class,'user_id','id');
     }
+    public function provider(){
+        return $this->hasOne(Provider::class,'user_id','id');
+    }
 }

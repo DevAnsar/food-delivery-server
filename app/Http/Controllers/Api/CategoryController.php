@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     public function categories(Request  $request){
         try{
-            $user=$request->user();
+           $user=$request->user() ? $request->user() : false;
            $categories=Category::where('parent_id','=',0)->get();
             $firstCategoryProviders=$categories->first()->providers;
            return  $this->res([
