@@ -44,6 +44,9 @@ Route::prefix('v1')->group(function (){
         Route::prefix('my-shop')->group(function (){
             Route::get('/menus',[ShopController::class,'menus']);
             Route::delete('/menus/{id}',[ShopController::class,'menus_destroy']);
+            Route::get('/menus/{id}',[ShopController::class,'get_menu']);
+            Route::post('/menus',[ShopController::class,'create_menus']);
+            Route::put('/menus/{id}',[ShopController::class,'edit_menus']);
         });
     });
     Route::get('/categories',[CategoryController::class,'categories']);

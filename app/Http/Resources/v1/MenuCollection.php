@@ -18,6 +18,7 @@ class MenuCollection extends ResourceCollection
             $data=[
                 'id'=>$item->id,
                 'title'=>$item->title,
+                'order'=>$item->order,
                 'productCount'=>$item->products()->count()
             ];
             return $data;
