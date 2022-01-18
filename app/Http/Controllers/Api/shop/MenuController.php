@@ -1,18 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\shop;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MenuRequest;
-use App\Http\Resources\v1\CategoryCollection;
 use App\Http\Resources\v1\MenuCollection;
 use App\Http\Resources\v1\MenuResource;
-use App\Http\Resources\v1\ProviderCollection;
-use App\Models\Category;
-use App\Models\Menu;
 use Illuminate\Http\Request;
 
-class ShopController extends Controller
+class MenuController extends Controller
 {
     public function menus(Request  $request){
         try{
@@ -32,7 +28,7 @@ class ShopController extends Controller
     }
     public function menus_destroy($menu_id,Request  $request){
         try{
-            $user=$request->user();
+            $user = $request->user();
             $provider=$user->provider;
             if ($provider){
                 $menu=$provider->menus()->where('id',$menu_id)->first();

@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\ProviderController;
-use App\Http\Controllers\Api\ShopController;
+use App\Http\Controllers\Api\shop\MenuController;
+use App\Http\Controllers\api\shop\ProductController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -42,11 +43,13 @@ Route::prefix('v1')->group(function (){
         Route::get('/my-orders',[UserController::class,'my_orders']);
         Route::get('/my-order-tracking',[UserController::class,'my_orders_tracking']);
         Route::prefix('my-shop')->group(function (){
-            Route::get('/menus',[ShopController::class,'menus']);
-            Route::delete('/menus/{id}',[ShopController::class,'menus_destroy']);
-            Route::get('/menus/{id}',[ShopController::class,'get_menu']);
-            Route::post('/menus',[ShopController::class,'create_menus']);
-            Route::put('/menus/{id}',[ShopController::class,'edit_menus']);
+            Route::get('/menus',[MenuController::class,'menus']);
+            Route::delete('/menus/{id}',[MenuController::class,'menus_destroy']);
+            Route::get('/menus/{id}',[MenuController::class,'get_menu']);
+            Route::post('/menus',[MenuController::class,'create_menus']);
+            Route::put('/menus/{id}',[MenuController::class,'edit_menus']);
+
+            Route::get('/menus/{id}/products',[ProductController::class,'products']);
         });
     });
     Route::get('/categories',[CategoryController::class,'categories']);
