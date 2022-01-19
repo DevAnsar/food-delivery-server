@@ -50,6 +50,10 @@ Route::prefix('v1')->group(function (){
             Route::put('/menus/{id}',[MenuController::class,'edit_menus']);
 
             Route::get('/menus/{id}/products',[ProductController::class,'products']);
+            Route::get('/menus/{menu_id}/products/{product_id}',[ProductController::class,'get_product']);
+            Route::put('/menus/{menu_id}/products/{product_id}',[ProductController::class,'edit_products']);
+            Route::post('/menus/{menu_id}/products',[ProductController::class,'create_products']);
+            Route::delete('/menus/{menu_id}/products/{product_id}',[ProductController::class,'products_destroy']);
         });
     });
     Route::get('/categories',[CategoryController::class,'categories']);
