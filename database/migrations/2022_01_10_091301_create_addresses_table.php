@@ -23,8 +23,8 @@ class CreateAddressesTable extends Migration
             $table->string('lng')->nullable();
             $table->string('floor')->nullable();
             $table->string('unit')->nullable();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->morphs('addressable');
+//            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreign('city_id')->references('id')->on('cities')->cascadeOnDelete();
             $table->timestamps();
         });

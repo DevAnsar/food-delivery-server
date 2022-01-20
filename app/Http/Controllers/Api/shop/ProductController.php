@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\shop;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MenuRequest;
-use App\Http\Resources\v1\MenuCollection;
-use App\Http\Resources\v1\MenuResource;
+use App\Http\Requests\ProductRequest;
+use App\Http\Resources\v1\ProductCollection;
+use App\Http\Resources\v1\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -21,7 +21,7 @@ class ProductController extends Controller
                     $products=$menu->products;
                     return  $this->res([
                         'menu'=>$menu,
-                        'products'=>$products,
+                        'products'=>new ProductCollection($products),
                     ],'لیست محصولات منو');
                 }
             }
@@ -41,7 +41,7 @@ class ProductController extends Controller
                 $product=Product::find($product_id);
                 if ($product && $product->user_id == $user->id){
 
-                    return  $this->res(['product'=>$product],'مشخصات محصول');
+                    return  $this->res(['product'=>new ProductResource($product)],'مشخصات محصول');
                 }else{
                     return  $this->res('','آیتم مورد نظر یافت نشد',false);
                 }
@@ -62,7 +62,8 @@ class ProductController extends Controller
                     $product=Product::find($product_id);
                     $product->update([
                         'title'=>$request->input('title'),
-                        'price'=>$request->input('price')
+                        'price'=>$request->input('price'),
+                        'description'=>$request->input('description'),
                     ]);
                     return  $this->res('','محصول با موفقیت ویرایش شد');
                 }else{
@@ -76,7 +77,7 @@ class ProductController extends Controller
         }
     }
 
-    public function create_products($menu_id,Request $request){
+    public function create_products($menu_id,ProductRequest $request){
         try{
             $user=$request->user();
             $provider=$user->provider;
@@ -88,7 +89,8 @@ class ProductController extends Controller
                         'user_id'=>$user->id,
                         'provider_id'=>$provider->id,
                         'title'=>$request->input('title'),
-                        'price'=>$request->input('price')
+                        'price'=>$request->input('price'),
+                        'description'=>$request->input('description'),
                     ]);
                     return  $this->res('','محصول با موفقیت افزوده شد');
                 }else{
@@ -102,7 +104,7 @@ class ProductController extends Controller
         }
     }
 
-    public function products_destroy($menu_id,$product_id,Request  $request){
+    public function products_destroy($menu_id,$product_id,ProductRequest  $request){
         try{
             $user = $request->user();
             $provider=$user->provider;

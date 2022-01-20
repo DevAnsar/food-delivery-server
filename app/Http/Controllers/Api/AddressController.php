@@ -46,7 +46,8 @@ class AddressController extends Controller
             ]);
             return $this->res(['address'=>$address],'آدرس با موفقیت افزوده شد');
         }catch (\Exception $e){
-            return $this->res(null,$this->SystemErrorMessage);
+//            return $this->res(null,$this->SystemErrorMessage);
+            return $this->res(null,$e->getMessage(),false);
         }
     }
 
@@ -60,8 +61,9 @@ class AddressController extends Controller
     public function update(AddressRequest $request, Address $address)
     {
         try {
+//            return $address;
             $user=$request->user();
-            if ($address->user_id == $user->id){
+            if ($address->addressable->id == $user->id){
             $address->update([
                 'name'=>$request->name,
                 'address'=>$request->address,

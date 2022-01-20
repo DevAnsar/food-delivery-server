@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserInformationRequest;
 use App\Http\Resources\v1\MeResource;
 use App\Http\Resources\v1\ProviderCollection;
+use App\Http\Resources\v1\ProviderResource;
 use App\Models\Provider;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -63,7 +64,11 @@ class UserController extends Controller
                 if ($user->login_code == $code){
                     //generate auth token
                     $token = $user->createToken($user->mobile);
-                    return  $this->res(['token'=>$token->plainTextToken],'با موفقیت وارد شدید',true);
+                    $provider = $user->provider;
+                    return  $this->res([
+                        'token'=>$token->plainTextToken,
+                        'provider'=>$provider
+                    ],'با موفقیت وارد شدید',true);
                 }else{
                     return  $this->res('','کد وارد شده صحیح نمیباشد',false);
                 }
@@ -167,6 +172,40 @@ class UserController extends Controller
                 return  $this->res('','کاربر یافت نشد',false);
             }
         }catch (\Exception $exception){
+            return  $this->res('',$this->SystemErrorMessage,false);
+        }
+    }
+
+    public function create_provider(Request $request){
+        try {
+
+            $user=$request->user();
+            if ($user){
+                if($user->provider){
+                    return  $this->res('','شما قبلا فروشگاه خود را ثبت رده اید',false);
+                }else{
+                    $provider=$user->provider()->create([
+                        'name'=>$request->name,
+                        'description'=>$request->description,
+                        'delivery_time'=>$request->deliveryTime,
+                        'category_id'=>1,
+                        'sub_category_id'=>2
+                    ]);
+                    $provider->address()->create([
+                        'name'=>$request->name,
+                        'address'=>$request->address,
+                        'city_id'=>$request->cityId,
+                        'area_id'=>$request->areaId
+                    ]);
+                    return  $this->res([
+                        'provider'=>new ProviderResource($provider,false,true)
+                    ],'فروشگاه با موفقیت ایجاد شد');
+                }
+            }else{
+                return  $this->res('','کاربر یافت نشد',false);
+            }
+        }catch (\Exception $exception){
+//            return  $this->res('',$exception->getMessage(),false);
             return  $this->res('',$this->SystemErrorMessage,false);
         }
     }

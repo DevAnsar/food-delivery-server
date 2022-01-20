@@ -47,7 +47,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     public function addresses(){
-        return $this->hasMany(Address::class,'user_id','id');
+        return $this->morphMany(Address::class, 'addressable');
+//        return $this->hasMany(Address::class,'user_id','id');
     }
     public function favorites(){
         return $this->hasMany(FavoriteProvider::class,'user_id','id');

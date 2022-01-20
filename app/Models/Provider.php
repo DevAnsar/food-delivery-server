@@ -50,4 +50,8 @@ class Provider extends Model
     public function favorites(){
         return $this->hasMany(FavoriteProvider::class,'provider_id','id');
     }
+    public function address(){
+        return $this->morphOne(Address::class, 'addressable');
+//        return $this->hasMany(Address::class,'user_id','id');
+    }
 }

@@ -7,16 +7,18 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class ProviderResource extends JsonResource
 {
     protected $withMenu;
+    protected $withAddress;
     /**
      * Create a new resource instance.
      *
      * @param  mixed  $resource
      * @return void
      */
-    public function __construct($resource,$withMenu=false)
+    public function __construct($resource,$withMenu=false,$withAddress=false)
     {
         $this->resource = $resource;
         $this->withMenu=$withMenu;
+        $this->withAddress=$withAddress;
     }
     /**
      * Transform the resource into an array.
@@ -39,6 +41,11 @@ class ProviderResource extends JsonResource
         if($this->withMenu){
             $data=array_merge($data,[
                 'menu'=>new ProviderMenuCollection($this->menus()->orderBy('order','asc')->get(),true)
+            ]);
+        }
+        if($this->withAddress){
+            $data=array_merge($data,[
+                'address'=>new AddressResource($this->address)
             ]);
         }
         return $data;

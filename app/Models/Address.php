@@ -9,7 +9,9 @@ class Address extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id',
+        'id',
+        'addressable_id',
+        'addressable_type',
         'name',
         'address',
         'city_id',
@@ -20,12 +22,16 @@ class Address extends Model
         'unit'
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function user(){
-        return $this->hasOne(User::class,'id','user_id');
+    public function addressable()
+    {
+        return $this->morphTo();
     }
+//    /**
+//     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+//     */
+//    public function user(){
+//        return $this->hasOne(User::class,'id','user_id');
+//    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */

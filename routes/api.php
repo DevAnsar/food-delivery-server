@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\ProviderController;
+use App\Http\Controllers\Api\shop\InformationController;
 use App\Http\Controllers\Api\shop\MenuController;
 use App\Http\Controllers\api\shop\ProductController;
 use App\Http\Controllers\Api\UserController;
@@ -54,6 +55,9 @@ Route::prefix('v1')->group(function (){
             Route::put('/menus/{menu_id}/products/{product_id}',[ProductController::class,'edit_products']);
             Route::post('/menus/{menu_id}/products',[ProductController::class,'create_products']);
             Route::delete('/menus/{menu_id}/products/{product_id}',[ProductController::class,'products_destroy']);
+
+            Route::get('/information',[InformationController::class,'information']);
+            Route::put('/information/edit',[InformationController::class,'information_edit']);
         });
     });
     Route::get('/categories',[CategoryController::class,'categories']);
@@ -61,5 +65,6 @@ Route::prefix('v1')->group(function (){
     Route::prefix('auth')->group(function (){
         Route::post('/phone',[UserController::class,'check_phone_number']);//create or update user and send login code
         Route::post('/code',[UserController::class,'check_login_code']);
+        Route::post('/providers/create',[UserController::class,'create_provider'])->middleware('auth:sanctum');
     });
 });
