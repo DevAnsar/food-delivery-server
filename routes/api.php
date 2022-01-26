@@ -1,13 +1,14 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\Controller as AdminController;
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\ProviderController;
 use App\Http\Controllers\Api\shop\InformationController;
 use App\Http\Controllers\Api\shop\MenuController;
-use App\Http\Controllers\api\shop\ProductController;
+use App\Http\Controllers\Api\shop\ProductController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::prefix('admin')->group(function (){
+    Route::post('/login',[AdminController::class,'admin_login']);
+    Route::get('/dashboard',[AdminController::class,'dashboard']);
     Route::get('/categories',[AdminCategoryController::class,'categories']);
 });
 

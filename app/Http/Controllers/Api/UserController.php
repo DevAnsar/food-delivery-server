@@ -63,10 +63,10 @@ class UserController extends Controller
                 $user = $potential_user_query->first();
                 if ($user->login_code == $code){
                     //generate auth token
-                    $token = $user->createToken($user->mobile);
+                    $token = $user->createToken($user->mobile)->plainTextToken;
                     $provider = $user->provider;
                     return  $this->res([
-                        'token'=>$token->plainTextToken,
+                        'token'=>$token,
                         'provider'=>$provider
                     ],'با موفقیت وارد شدید',true);
                 }else{
