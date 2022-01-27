@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\Controller as AdminController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CityController;
@@ -30,6 +31,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('admin')->group(function (){
     Route::post('/login',[AdminController::class,'admin_login']);
     Route::get('/dashboard',[AdminController::class,'dashboard']);
+    Route::resource('users',AdminUserController::class);
     Route::get('/categories',[AdminCategoryController::class,'categories']);
 });
 
