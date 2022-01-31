@@ -20,7 +20,8 @@ class DeliveryCollection extends ResourceCollection
                 'name'=>$item->name,
                 'user'=> new UserResource($item->user),
                 'description'=>$item->description,
-                'image'=>$item->image
+                'image'=>$item->image,
+                'deliveryTime'=>$item->delivery_time,
             ];
             return $data;
         });

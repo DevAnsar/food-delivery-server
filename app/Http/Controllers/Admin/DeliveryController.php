@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\admin\providerRequest;
 use App\Http\Resources\admin\DeliveryCollection;
+use App\Http\Resources\admin\DeliveryResource;
 use App\Models\Provider;
 use Illuminate\Http\Request;
 
@@ -40,9 +42,26 @@ class DeliveryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(providerRequest $request)
     {
-        //
+        try {
+            $provider=Provider::create([
+                'category_id'=>1,
+                'subcategory_id'=>2,
+                'user_id'=>$request->userId,
+                'name'=>$request->name,
+                'description'=>$request->description,
+                'delivery_time'=>$request->deliveryTime
+            ]);
+            if ($provider){
+                return $this->res('','فروشنده با موفقیت ایجاد شد');
+            }else{
+                return $this->res('',' فروشنده جدید ایجاد نشد',false);
+            }
+
+        }catch (Exception $exception){
+            return  $this->res('','مشکل در دریافت اطلاعات از سرور',false);
+        }
     }
 
     /**
@@ -51,20 +70,19 @@ class DeliveryController extends Controller
      * @param  \App\Models\Provider  $provider
      * @return \Illuminate\Http\Response
      */
-    public function show(Provider $provider)
+    public function show($provider_id)
     {
-        //
-    }
+        try {
+            $provider=Provider::find($provider_id);
+            if ($provider){
+                return $this->res(['delivery'=>new DeliveryResource($provider)],'اطلاعات فروشنده');
+            }else{
+                return $this->res('',' فروشنده یافت نشد',false);
+            }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Provider  $provider
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Provider $provider)
-    {
-        //
+        }catch (Exception $exception){
+            return  $this->res('','مشکل در دریافت اطلاعات از سرور',false);
+        }
     }
 
     /**
@@ -74,9 +92,30 @@ class DeliveryController extends Controller
      * @param  \App\Models\Provider  $provider
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Provider $provider)
+    public function update(providerRequest $request,$provider_id)
     {
-        //
+        try {
+            $provider=Provider::find($provider_id);
+            if ($provider){
+                $update=$provider->update([
+                    'user_id'=>$request->input('userId'),
+                    'category_id'=>1,
+                    'subcategory_id'=>2,
+                    'name'=>$request->input('name'),
+                    'description'=>$request->input('description'),
+                    'delivery_time'=>$request->input('deliveryTime'),
+                ]);
+                if($update){
+                    return $this->res('','فروشنده با موفقیت ویرایش شد');
+                }
+                return $this->res('','آپدیت فروشنده انجام نشد',false);
+            }else{
+                return $this->res('',' فروشنده یافت نشد',false);
+            }
+
+        }catch (Exception $exception){
+            return  $this->res('','مشکل در دریافت اطلاعات از سرور',false);
+        }
     }
 
     /**
@@ -85,8 +124,22 @@ class DeliveryController extends Controller
      * @param  \App\Models\Provider  $provider
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Provider $provider)
+    public function destroy($provider_id)
     {
-        //
+        try {
+            $provider=Provider::find($provider_id);
+            if ($provider){
+                $deleted=$provider->delete();
+                if($deleted){
+                    return $this->res('','فروشنده با موفقیت حذف شد');
+                }
+                return $this->res('','حذف فروشنده انجام نشد',false);
+            }else{
+                return $this->res('',' فروشنده یافت نشد',false);
+            }
+
+        }catch (Exception $exception){
+            return  $this->res('','مشکل در دریافت اطلاعات از سرور',false);
+        }
     }
 }
