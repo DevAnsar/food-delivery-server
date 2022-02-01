@@ -25,6 +25,7 @@ class providerRequest extends FormRequest
     {
         return [
             'userId'=>'required',
+            'categoryId'=>'required',
             'name'=>'required',
             'description'=>'nullable',
             'deliveryTime'=>'required'

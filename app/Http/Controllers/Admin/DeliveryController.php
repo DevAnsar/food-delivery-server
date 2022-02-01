@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\providerRequest;
 use App\Http\Resources\admin\DeliveryCollection;
 use App\Http\Resources\admin\DeliveryResource;
+use App\Http\Resources\admin\UserCollection;
+use App\Http\Resources\v1\CategoryCollection;
+use App\Models\Category;
 use App\Models\Provider;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DeliveryController extends Controller
@@ -33,7 +37,16 @@ class DeliveryController extends Controller
      */
     public function create()
     {
-        //
+        try {
+            $users=User::all();
+            $categories=Category::where('parent_id',0)->get();
+            return $this->res([
+                'users'=>new UserCollection($users),
+                'categories'=>new CategoryCollection($categories)
+            ],'لیست کاربران و دسته بندی ها');
+        }catch (Exception $exception){
+            return  $this->res('','مشکل در دریافت اطلاعات از سرور',false);
+        }
     }
 
     /**
@@ -46,8 +59,8 @@ class DeliveryController extends Controller
     {
         try {
             $provider=Provider::create([
-                'category_id'=>1,
                 'subcategory_id'=>2,
+                'category_id'=>$request->input('categoryId'),
                 'user_id'=>$request->userId,
                 'name'=>$request->name,
                 'description'=>$request->description,
@@ -99,7 +112,7 @@ class DeliveryController extends Controller
             if ($provider){
                 $update=$provider->update([
                     'user_id'=>$request->input('userId'),
-                    'category_id'=>1,
+                    'category_id'=>$request->input('categoryId'),
                     'subcategory_id'=>2,
                     'name'=>$request->input('name'),
                     'description'=>$request->input('description'),

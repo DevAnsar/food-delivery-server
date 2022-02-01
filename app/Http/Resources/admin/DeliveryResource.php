@@ -17,7 +17,11 @@ class DeliveryResource extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->name,
+            'categoryId'=>$this->category_id,
+            'subcategory_id'=>$this->subcategory_id,
+            'userId'=>$this->user_id,
             'user'=> new UserResource($this->user),
+            'category'=>$this->category,
             'description'=>$this->description,
             'image'=>$this->image,
             'deliveryTime'=>$this->delivery_time,
