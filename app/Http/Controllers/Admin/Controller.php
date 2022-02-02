@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller as MainController;
+use App\Http\Resources\v1\CityCollection;
+use App\Models\City;
 use App\Models\Product;
 use App\Models\Provider;
 use App\Models\User;

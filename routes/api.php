@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\Controller as AdminController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\DeliveryController as AdminDeliveryController;
+use App\Http\Controllers\Admin\DeliveryAddressController as AdminDeliveryAddressController;
 
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CategoryController;
@@ -35,6 +36,8 @@ Route::prefix('admin')->group(function (){
     Route::get('/dashboard',[AdminController::class,'dashboard']);
     Route::resource('users',AdminUserController::class);
     Route::resource('deliveries',AdminDeliveryController::class);
+    Route::get('deliveries/{id}/address',[AdminDeliveryAddressController::class,'index']);
+    Route::put('deliveries/{id}/address',[AdminDeliveryAddressController::class,'update']);
     Route::get('/categories',[AdminCategoryController::class,'categories']);
 });
 
